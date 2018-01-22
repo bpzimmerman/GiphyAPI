@@ -49,10 +49,8 @@ $(document).ready(function(){
                 url: queryURL,
                 method: "GET"
             }).done(function(response) {
-                console.log(response);
                 // store the gif object for later use
                 app.gifObject = response;
-                console.log(app.gifObject);
                 // local variable to keep track of the row number
                 var x = 1;
                 // for loop to get the arguments for and to call the gifAppend method
