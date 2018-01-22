@@ -19,7 +19,7 @@ $(document).ready(function(){
                 var bttn = $("<button>").text(item);
                 // add classes to the buttons
                 bttn.addClass("btn btn-default gifButtons");
-                // add data (replaces spaces with "+")
+                // add data to the buttons (replaces spaces with "+")
                 bttn.attr("data", item.replace(/\s/g, "+"))
                 // appends the finished buttons
                 $("#buttons").append(bttn);
@@ -47,7 +47,9 @@ $(document).ready(function(){
                 method: "GET"
             }).done(function(response) {
                 console.log(response);
+                // store the gif object for later use
                 app.gifObject = response;
+                console.log(app.gifObject);
                 // local variable to keep track of the row number
                 var x = 1;
                 // for loop to get the arguments for and to call the gifAppend method
@@ -103,12 +105,26 @@ $(document).ready(function(){
                 var ani = app.gifObject.data[sel].images.original_still.url;
                 $("#" + sel + " img").attr("src", ani);
             };
+        },
+        // method to add a gif category button
+        addButton: function(event){
+            event.preventDefault();
+            // gets the input from the textbox
+            var newButton = $("#button-input").val().trim();
+            //makes sure the input value is not already in the array
+            if (app.buttons.indexOf(newButton) === -1){
+              app.buttons.push(newButton);
+            };
+            // Calling renderButtons which handles the processing of our movie array
+            app.displayButtons();
         }
     };
-    // calls the displayGifs method on clicking one of the gif buttons
+    // calls the displayGifs method on clicking one of the gif category buttons to display the specified number of gifs
     $(document).on("click", ".gifButtons", app.displayGifs);
-    // calls the toggleGifAnimation method on clicking one of the gifs
+    // calls the toggleGifAnimation method on clicking one of the gifs to turn the animationon and off
     $(document).on("click", ".gif", app.toggleGifAnimation);
+    // calls the addButton method to add a gif category when using the form
+    $("#add-button").on("click", app.addButton);
     // initial display of the gif buttons
     app.displayButtons();
 });
