@@ -1,3 +1,23 @@
+@font-face{
+    font-family: interesting;
+    src: url(KBZipaDeeDooDah.ttf);
+}
+
+*{
+    font-family: interesting;
+}
+
+body{
+    background: url("../images/background.png");
+    background-color: rgb(118, 154, 230);
+}
+
+h1, #gifLocation p{
+    font-weight: bold;
+    text-align: center;
+    padding-top: 20px;
+}
+
 .btn{
     margin: 5px;
 }
@@ -6,6 +26,10 @@ img{
     max-width: 100%;
 }
 
-#gifLocation p{
+#gifLocation{
+    text-align: center;
+}
+
+form{
     padding-top: 20px;
 }

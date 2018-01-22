@@ -31,6 +31,9 @@ $(document).ready(function(){
             var category = $(this).attr("data");
             var apiKey = "7rSO11KnqXxXvu2uymZBS0hR77yFRh9E";
             var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + category + "&api_key=" + apiKey + "&limit=" + app.numberOfGifs;
+            // force active styling for the currently seleted category
+            $(".active").removeClass("active");
+            $(this).addClass("active");
             // calculate the gifs to be displayed per row
             app.gifsPerRow = Math.ceil(app.numberOfGifs / app.displayRows);
             // empty the gif location
@@ -115,7 +118,7 @@ $(document).ready(function(){
             if (app.buttons.indexOf(newButton) === -1){
               app.buttons.push(newButton);
             };
-            // Calling renderButtons which handles the processing of our movie array
+            // calls the displayButtons method to display the buttons (gif categories) array in a series of buttons
             app.displayButtons();
         }
     };
