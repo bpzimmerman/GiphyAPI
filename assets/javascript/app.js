@@ -1,15 +1,14 @@
 $(document).ready(function(){
     var app = {
-        // default of the maximum number of gifs to display
-        defaultNumGifs: 12,
+        // default of the number of gifs per row
+        defaultNumGifs: 4,
         // default of the number of rows used to display the gifs
         defaultNumRows: 3,
-        // maximum number of gifs to display
-        numberOfGifs: 12,
+        // number of gifs to be displayed per row
+        gifsPerRow: 4,
         // number of rows to be used to display the gifs
         displayRows: 3,
-        // holder for the number of gifs to be displayed per row - the calculation is performed in the displayGifs method
-        gifsPerRow: 0,
+        // holder for the ajax call response
         gifObject: {},
         // initial button array
         buttons: ["Better Off Dead", "The Goonies", "Vacation", "The Princess Bride", "Back to the Future", "Ghostbusters", "Ferris Bueller's Day Off", "Beetlejuice", "Fast Times at Ridgemont High", "Weird Science", "Scrooged", "Caddyshack", "Trading Places", "Real Genius", "Spaceballs", "Weekend at Bernie's", "Big Trouble in Little China", "One Crazy Summer", "A Christmas Story", "Trading Places"],
@@ -32,7 +31,7 @@ $(document).ready(function(){
         },
         // method to display the settings in the form text boxes
         displaySettings: function(){
-            $("#numGifs-input").val(app.numberOfGifs);
+            $("#numGifs-input").val(app.gifsPerRow);
             $("#numRows-input").val(app.displayRows);
         },
         // method to reset the gifs
@@ -47,20 +46,19 @@ $(document).ready(function(){
             // declare local variables
             var category = $(this).attr("data");
             var apiKey = "7rSO11KnqXxXvu2uymZBS0hR77yFRh9E";
-            var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + category + "+movies&api_key=" + apiKey + "&limit=" + app.numberOfGifs;
+            var numberOfGifs = app.gifsPerRow * app.displayRows;
+            var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + category + "+movies&api_key=" + apiKey + "&limit=" + numberOfGifs;
             // call the method to reset the gifs
             app.resetGifs();
             // force active styling for the currently seleted category
             $(this).addClass("active");
-            // calculate the gifs to be displayed per row
-            app.gifsPerRow = Math.ceil(app.numberOfGifs / app.displayRows);
             // create the rows to house the gifs and ratings
             for (var i = 1; i < (app.displayRows + 1); i += 1){
                 var gifRow = $("<div>").addClass("row");
                 gifRow.attr("id", "row" + i);
                 $("#gifLocation").append(gifRow);
             };
-            // ajax call to get the gifs
+            // ajax call to get the gif object
             $.ajax({
                 url: queryURL,
                 method: "GET"
@@ -71,14 +69,11 @@ $(document).ready(function(){
                 var x = 1;
                 // for loop to get the arguments for and to call the gifAppend method
                 for (var i = 0; i < response.data.length; i += app.gifsPerRow){
-                    // if - else statement to stop the gifAppend method at the correct endpoint
-                    if (i + app.gifsPerRow > response.data.length){
-                        var end = response.data.length;
-                    }
-                    else{
-                        var end = i + app.gifsPerRow;
-                    };
+                    // variable to set the endpoint of the gifAppend method
+                    var end = i + app.gifsPerRow;
+                    // call the gifAppend method to append the specified number of gifs onto each row
                     app.gifAppend(i, end, x, response);
+                    // increment the row number
                     x += 1;
                 };
             });
@@ -87,7 +82,7 @@ $(document).ready(function(){
         gifAppend: function(start, stop, rowNumber, obj){
             for (var j = start; j < stop; j += 1){
                 // local variable to calculate the bootstrap grid width
-                var numCols = Math.floor(12 / app.gifsPerRow);
+                var numCols = 12 / app.gifsPerRow;
                 // create div to house the rating and gif
                 var gifDiv = $("<div>").addClass("col-sm-" + numCols + " still gif");
                 gifDiv.attr("id", j);
@@ -104,7 +99,7 @@ $(document).ready(function(){
         },
         // method to toggle the gif animation on and off
         toggleGifAnimation: function(){
-            // if - else depending on if the gif is moving or still
+            // if - else to determine if the gif is moving or still
             if ($(this).hasClass("still")){
                 // changes class from still to motion
                 $(this).removeClass("still");
@@ -143,38 +138,24 @@ $(document).ready(function(){
             event.preventDefault();
             // local variable to store id of the button that was clicked
             var settingsClicked = $(this).attr("id");
-            // call the method to reste the gifs
+            // call the method to reset the gifs
             app.resetGifs();
-            // if the default settings button is clicked set the number of gifs and the number of display rows to the default values
+            // if the default settings button is clicked set the number of gifs per row and the number of display rows to the default values
             if (settingsClicked === "reset-button"){
-                app.numberOfGifs = app.defaultNumGifs;
+                app.gifsPerRow = app.defaultNumGifs;
                 app.displayRows = app.defaultNumRows;
             }
             else{
                 // changes the values entered into numbers and takes the absolute value (no negative numbers)
-                var newNumGifs = Math.abs(parseInt($("#numGifs-input").val().trim()));
+                app.gifsPerRow = parseInt($("#numGifs-input").val());
                 var newNumRows = Math.abs(parseInt($("#numRows-input").val().trim()));
                 // if one of the values is either NaN or 0, will reset to the default value; otherwise uses the entered number
-                switch (isNaN(newNumGifs) || newNumGifs){
-                    case true:
-                    case 0:
-                        app.numberOfGifs = app.defaultNumGifs;
-                    break;
-                    default:
-                        app.numberOfGifs = newNumGifs;
-                };
-                switch (isNaN(newNumRows) || newNumRows){
-                    case true:
-                    case 0:
-                        app.displayRows = app.defaultNumRows;
-                    break;
-                    default:
-                        app.displayRows = newNumRows;
-                };
-                // forces the maximum number of gifs per row to 6
-                if (Math.ceil(app.numberOfGifs / app.displayRows) > 6){
-                    app.numberOfGifs = app.displayRows * 6;
-                };
+                if (isNaN(newNumRows) || newNumRows === 0){
+                    app.displayRows = app.defaultNumRows;
+                }
+                else{
+                    app.displayRows = newNumRows;
+                }
             };
             // call the display settings method to display the new settings in the form text boxes
             app.displaySettings();
@@ -190,9 +171,6 @@ $(document).ready(function(){
     $("#reset-button").on("click", app.changeSettings);
     $("#settings-button").on("click", app.changeSettings);
     // the value in the text box disappears when the box is selected (don't have to delete the value before changing)
-    $("#numGifs-input").on("focus", function(){
-        $(this).val("");
-    });
     $("#numRows-input").on("focus", function(){
         $(this).val("");
     });

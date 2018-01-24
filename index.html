@@ -34,17 +34,21 @@
             <div class = "col-sm-2 col-sm-push-10">
                 <form id = "button-form">
                     <label for = "button-input">Add a Gif Category</label>
-                    <input type = "text" id = "button-input">
-                    <br>
+                    <input type = "text" id = "button-input" class = "form-control">
                     <input id = "add-button" class = "btn btn-default" type = "submit" value = "Add Category">
                 </form>
                 <br><br><br><br>
                 <form id = "settings-form">
-                    <label for = "numGifs-input"># of Gifs to Display</label>
-                    <input type = "text" id = "numGifs-input">
+                    <label for = "numGifs-input"># of Gifs per Row</label>
+                    <select id = "numGifs-input" class = "form-control">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>6</option>
+                    </select>
                     <label for = "numRows-input"># of Rows to Display</label>
-                    <input type = "text" id = "numRows-input">
-                    <br>
+                    <input type = "text" id = "numRows-input" class = "form-control">
                     <input id = "settings-button" class = "btn btn-default" type = "submit" value = "Change Settings">
                     <input id = "reset-button" class = "btn btn-default" type = "submit" value = "Default Settings">
                 </form>
