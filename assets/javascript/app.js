@@ -11,7 +11,7 @@ $(document).ready(function(){
         // holder for the ajax call response
         gifObject: {},
         // initial button array
-        buttons: ["Better Off Dead", "The Goonies", "Vacation", "The Princess Bride", "Back to the Future", "Ghostbusters", "Ferris Bueller's Day Off", "Beetlejuice", "Fast Times at Ridgemont High", "Weird Science", "Scrooged", "Caddyshack", "Trading Places", "Real Genius", "Spaceballs", "Weekend at Bernie's", "Big Trouble in Little China", "One Crazy Summer", "A Christmas Story", "Trading Places"],
+        buttons: ["Better Off Dead", "The Goonies", "Vacation", "The Princess Bride", "Back to the Future", "Ghostbusters", "Ferris Bueller's Day Off", "Beetlejuice", "Scrooged", "Real Genius", "Airplane!", "Fast Times at Ridgemont High", "Weird Science", "Caddyshack", "Trading Places", "Spaceballs", "Weekend at Bernie's", "Big Trouble in Little China", "One Crazy Summer", "A Christmas Story"],
         // method to display the button in the button array
         displayButtons: function(){
             // clears the button location
@@ -39,7 +39,7 @@ $(document).ready(function(){
             // empty the gif location
             $("#gifLocation").empty();
             // remove active styling from any previously selected category button
-            $(".active").removeClass("active");
+            $(".act").removeClass("act");
         },
         // method to display the gifs
         displayGifs: function(){
@@ -51,7 +51,7 @@ $(document).ready(function(){
             // call the method to reset the gifs
             app.resetGifs();
             // force active styling for the currently seleted category
-            $(this).addClass("active");
+            $(this).addClass("act");
             // create the rows to house the gifs and ratings
             for (var i = 1; i < (app.displayRows + 1); i += 1){
                 var gifRow = $("<div>").addClass("row");
@@ -130,6 +130,7 @@ $(document).ready(function(){
             if (app.buttons.indexOf(newButton) === -1){
               app.buttons.push(newButton);
             };
+            $("#button-input").val("");
             // calls the displayButtons method to display the buttons (gif categories) array in a series of buttons
             app.displayButtons();
         },
