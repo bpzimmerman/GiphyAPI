@@ -47,7 +47,7 @@ $(document).ready(function(){
             var category = $(this).attr("data");
             var apiKey = "7rSO11KnqXxXvu2uymZBS0hR77yFRh9E";
             var numberOfGifs = app.gifsPerRow * app.displayRows;
-            var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + category + "+movies&api_key=" + apiKey + "&limit=" + numberOfGifs;
+            var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + category + "+movies&api_key=" + apiKey + "&limit=" + numberOfGifs;
             // call the method to reset the gifs
             app.resetGifs();
             // force active styling for the currently seleted category
